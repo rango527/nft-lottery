@@ -1,22 +1,22 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.10;
 
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 
-contract Ticket is ERC721Enumerable, Ownable {
+contract TicketUpgradeable is ERC721EnumerableUpgradeable, OwnableUpgradeable {
     using Strings for uint256;
 
-    bool public paused = false;
+    bool public paused;
 
     string public baseURI;
-    string public baseExtension = ".json";
+    string public baseExtension;
 
     address[] private players;
     address[] private winners;
 
-    uint256 public ticketPrice = 0.1 ether; // For test
+    uint256 public ticketPrice; // For test
     uint256 public startDate;
     uint256 public endDate;
 
@@ -31,14 +31,22 @@ contract Ticket is ERC721Enumerable, Ownable {
         uint256 createdAt
     );
 
-    constructor(
+    function initialize(
         string memory _initBaseURI,
         uint256 _startDate,
-        uint256 _endDate
-    ) ERC721("NFTLottery", "NL") {
+        uint256 _endDate,
+        uint256 _ticketPrice
+    ) initializer public {
+        __ERC721_init("NFTLottery", "NL");
+        __Ownable_init();
+
         baseURI = _initBaseURI;
         startDate = _startDate;
         endDate = _endDate;
+        ticketPrice = _ticketPrice;
+
+        paused = false;
+        baseExtension = ".json";
     }
 
     function buyTicket() external payable {

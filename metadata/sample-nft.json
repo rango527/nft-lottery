@@ -1,0 +1,10 @@
+{   
+  "description": "This is a sample NFT metadata.",
+  "image": "https://gateway.pinata.cloud/ipfs/Qmac8mUyNQ7JrJWAorZvSCjrsMzKB5MJuvPpJfnv85dhjd/0.png",
+  "name": "Nathan Cao",
+  "attributes": [
+      { "trait_type": "Base", "value": "Starfish" },
+      { "trait_type": "Eyes", "value": "Big" },
+      { "trait_type": "Mouth","value": "Surprised" }
+  ]
+}

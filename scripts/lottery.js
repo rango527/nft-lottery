@@ -1,14 +1,14 @@
 const { ethers, upgrades } = require("hardhat");
 
 async function main() {
-  const Ticket = await ethers.getContractFactory("Ticket");
+  const TicketUpgradeable = await ethers.getContractFactory("TicketUpgradeable");
   const block = await ethers.provider.getBlock("latest");
   const ticketPrice = ethers.utils.parseEther("0.1"); // 0.1 ether = 100000000000000000
 
   const ticket = await upgrades.deployProxy(
-    Ticket,
+    TicketUpgradeable,
     [
-      "https://example.com/",
+      "http://localhost:3000/",
       block.timestamp,
       block.timestamp + 86400,
       ticketPrice
@@ -17,7 +17,7 @@ async function main() {
 
   await ticket.deployed();
 
-  console.log("Ticket deployed to:", ticket.address);
+  console.log("Ticket proxy contract deployed to:", ticket.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

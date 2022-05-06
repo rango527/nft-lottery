@@ -12,7 +12,7 @@ describe("NFT Lottery contract test", function () {
     let users = [];
     let block;
 
-    const initBaseURI = "https://example.com/";
+    const initBaseURI = "http://localhost:3000/";
     const limitTime = 86400; // 1 day
     const ticketPrice = ethers.utils.parseEther("0.1"); // 0.1 eth
 
@@ -23,13 +23,11 @@ describe("NFT Lottery contract test", function () {
 
         block = await ethers.provider.getBlock("latest");
         const TicketContract = await ethers.getContractFactory("Ticket");
-        // Ticket contract deploy - limited time is 1 day
-        ticketContract = await upgrades.deployProxy(
-            TicketContract,
-            [
-                initBaseURI, block.timestamp, block.timestamp + limitTime, ticketPrice
-            ]
-        );
+        ticketContract = await TicketContract.deploy(initBaseURI, block.timestamp, block.timestamp + limitTime);
+
+        // set new ticket price
+        await ticketContract.connect(ceo).setTicketPrice(ticketPrice);
+        expect(await ticketContract.ticketPrice()).to.equal(ticketPrice);
     });
 
     describe("BuyTicket", function () {
