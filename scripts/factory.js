@@ -1,5 +1,4 @@
-const { ethers, upgrades } = require("hardhat");
-const { BigNumber } = require("@ethersproject/bignumber");
+const { ethers } = require("hardhat");
 
 async function main() {
     const Ticket = await ethers.getContractFactory("Ticket");
